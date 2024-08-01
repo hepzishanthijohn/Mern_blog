@@ -1,26 +1,28 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {UserContext} from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import styled from 'styled-components';
-
+import axios from 'axios'; // Import Axios
 
 const Logout = () => {
- const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { setUserInfo } = useContext(UserContext); // Make sure to use UserContext to access setUserInfo
 
-   
   const handleCancel = () => {
     navigate(-1);
   };
 
-
-  const handleLogout= () => {
-    fetch('https://mern-blog-2-9i1u.onrender.com/users/logout', {
-      credentials: 'include',
-      method: 'POST',
-    });
-    setUserInfo(null);
-    navigate("/")
-  }
+  const handleLogout = async () => {
+    try {
+      await axios.post('https://mern-blog-2-9i1u.onrender.com/users/logout', {}, {
+        withCredentials: true, // Include credentials in the request
+      });
+      setUserInfo(null);
+      navigate("/");
+    } catch (error) {
+      console.error("Error logging out:", error); // Handle error
+    }
+  };
 
   return (
     <LogoutContainer>
@@ -38,7 +40,7 @@ const LogoutContainer = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   margin-top: 130px;
-  height:   70vh;
+  height: 70vh;
   padding: 20px;
   display: flex;
   flex-direction: column;
