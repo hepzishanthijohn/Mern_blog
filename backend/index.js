@@ -16,7 +16,7 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 const cookieParser = require('cookie-parser')
 app.use(cookieParser())
 
-app.use(cors({credentials:true, origin:'https://mern-blog-9tdf.vercel.app'}));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
