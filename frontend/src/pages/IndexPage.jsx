@@ -10,7 +10,7 @@ export default function IndexPage() {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/posts/post');
+      const response = await axios.get('https://mern-blog-1-puw7.onrender.com/posts/post');
       setPosts(response.data);
     } catch (error) {
       console.error('Error fetching posts:', error);

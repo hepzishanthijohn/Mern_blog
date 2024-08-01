@@ -22,7 +22,7 @@ export default function LoginPage() {
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.post('http://localhost:8000/users/login', 
+      const response = await axios.post('https://mern-blog-1-puw7.onrender.com/users/login', 
         values,
         { withCredentials: true } // Include credentials (cookies) with the request
       );

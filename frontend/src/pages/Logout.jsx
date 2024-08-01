@@ -14,7 +14,7 @@ const Logout = () => {
 
 
   const handleLogout= () => {
-    fetch('http://localhost:8000/users/logout', {
+    fetch('https://mern-blog-1-puw7.onrender.com/users/logout', {
       credentials: 'include',
       method: 'POST',
     });

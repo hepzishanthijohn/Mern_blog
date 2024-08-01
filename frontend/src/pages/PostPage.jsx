@@ -12,7 +12,7 @@ export default function PostPage() {
   useEffect(() => {
     const fetchPostInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/posts/post/${id}`);
+        const response = await axios.get(`https://mern-blog-1-puw7.onrender.com/posts/post/${id}`);
         setPostInfo(response.data);
       } catch (error) {
         console.error('Error fetching post details:', error);
@@ -41,7 +41,7 @@ export default function PostPage() {
         </div>
         <h3>{postInfo.title}</h3>
         <div className="post-detail__thumbnail">
-          <img src={`http://localhost:8000/${postInfo.cover}`} alt="" />
+          <img src={`https://mern-blog-1-puw7.onrender.com/${postInfo.cover}`} alt="" />
         </div>
         <h4>{postInfo.summary}</h4>
         <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
@@ -56,7 +56,7 @@ export default function PostPage() {
   //     <div className="author">by @{postInfo.author.username}</div>
       
   //     <div className="image">
-  //       <img src={`http://localhost:8000/posts/post/${postInfo.cover}`} alt=""/>
+  //       <img src={`https://mern-blog-1-puw7.onrender.com/posts/post/${postInfo.cover}`} alt=""/>
   //     </div>
   //     <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
   //   </div>

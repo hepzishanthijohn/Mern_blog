@@ -9,7 +9,7 @@ const DeletePost = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8000/posts/post/${id}`);
+      const response = await axios.delete(`https://mern-blog-1-puw7.onrender.com/posts/post/${id}`);
       console.log('Record deleted successfully:', response);
       navigate('/'); // Redirect to home or another page after deletion
     } catch (error) {
