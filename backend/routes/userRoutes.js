@@ -6,7 +6,22 @@ const User = require('../models/UserSchema');
 
 const salt = bcrypt.genSaltSync(10);
 
+// Middleware for JWT verification
+const verifyToken = (req, res, next) => {
+    const { token } = req.cookies;
+    if (!token) {
+        return res.status(401).json({ error: 'No token provided' });
+    }
+    jwt.verify(token, process.env.JWT_SECRET, (err, info) => {
+        if (err) {
+            return res.status(403).json({ error: 'Invalid token' });
+        }
+        req.user = info; // Attach user info to the request
+        next();
+    });
+};
 
+// User registration
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
     try {
@@ -19,71 +34,67 @@ router.post('/register', async (req, res) => {
         const hashedPassword = bcrypt.hashSync(password, salt);
         const userDoc = await User.create({
             username,
-            email, // Save email
+            email,
             password: hashedPassword,
         });
 
-        res.status(201).json(userDoc);
+        res.status(201).json({ 
+            id: userDoc._id,
+            username: userDoc.username,
+            email: userDoc.email
+        });
     } catch (e) {
         console.error(e);
         res.status(400).json({ error: 'User registration failed' });
     }
 });
 
-
+// User login
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+    const { email, password } = req.body;
 
-  try {
-      // Find user by email
-      const userDoc = await User.findOne({ email });
+    try {
+        const userDoc = await User.findOne({ email });
+        if (!userDoc) {
+            return res.status(400).json({ error: 'User not found' });
+        }
 
-      // Check if the user exists
-      if (!userDoc) {
-          return res.status(400).json('User not found');
-      }
+        const passOk = bcrypt.compareSync(password, userDoc.password);
+        if (passOk) {
+            jwt.sign({ id: userDoc._id, email: userDoc.email }, process.env.JWT_SECRET, {}, (err, token) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ error: 'Failed to create token' });
+                }
 
-      // Compare provided password with the stored hash
-      const passOk = bcrypt.compareSync(password, userDoc.password);
-
-      if (passOk) {
-          // Generate JWT token
-          jwt.sign({ id: userDoc._id, email: userDoc.email }, process.env.JWT_SECRET, {}, (err, token) => {
-              if (err) {
-                  console.error(err);
-                  return res.status(500).json('Failed to create token');
-              }
-
-              // Send the token as a cookie and user details in response
-              res.cookie('token', token).json({
-                  id: userDoc._id,
-                  email: userDoc.email,
-                  username: userDoc.username, // Return username along with email
-              });
-          });
-      } else {
-          res.status(400).json('Incorrect password');
-      }
-  } catch (e) {
-      console.error(e);
-      res.status(500).json('Login failed');
-  }
+                // Set cookie with secure options
+                res.cookie('token', token, {
+                    httpOnly: true, // Prevent JavaScript access to the cookie
+                    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+                    sameSite: 'Strict', // Prevent CSRF
+                }).json({
+                    id: userDoc._id,
+                    email: userDoc.email,
+                    username: userDoc.username,
+                });
+            });
+        } else {
+            res.status(400).json({ error: 'Incorrect password' });
+        }
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'Login failed' });
+    }
 });
 
+// Get user profile
+router.get('/profile', verifyToken, (req, res) => {
+    res.json(req.user); // Send user info from the request
+});
 
-
-
-  router.get('/profile', (req,res) => {
-    const {token} = req.cookies;
-    jwt.verify(token, process.env.JWT_SECRET, {}, (err,info) => {
-      if (err) throw err;
-      res.json(info);
-    });
-  });
-  
-  router.post('/logout', (req,res) => {
-    res.cookie('token', '').json('ok');
-  });
-
+// User logout
+router.post('/logout', (req, res) => {
+    res.cookie('token', '', { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Strict' }).json('ok');
+});
 
 module.exports = router;
