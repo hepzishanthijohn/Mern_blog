@@ -14,7 +14,7 @@ const Logout = () => {
 
 
   const handleLogout= () => {
-    fetch('https://mern-blog-1-puw7.onrender.com/users/logout', {
+    fetch('https://mern-blog-2-9i1u.onrender.com/users/logout', {
       credentials: 'include',
       method: 'POST',
     });

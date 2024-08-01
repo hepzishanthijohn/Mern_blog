@@ -21,7 +21,7 @@ export default function RegisterPage() {
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.post('https://mern-blog-1-puw7.onrender.com/users/register', values, {
+      const response = await axios.post('https://mern-blog-2-9i1u.onrender.com/users/register', values, {
         headers: { 'Content-Type': 'application/json' }
       });
 

@@ -8,7 +8,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 export default function Header() {
   const {setUserInfo,userInfo} = useContext(UserContext);
   useEffect(() => {
-    fetch('https://mern-blog-1-puw7.onrender.com/users/profile', {
+    fetch('https://mern-blog-2-9i1u.onrender.com/users/profile', {
       credentials: 'include',
     }).then(response => {
       response.json().then(userInfo => {
