@@ -7,15 +7,15 @@ const DeletePost = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`https://mern-blog-1-puw7.onrender.com/posts/post/${id}`);
-      console.log('Record deleted successfully:', response);
-      navigate('/'); // Redirect to home or another page after deletion
-    } catch (error) {
-      console.error('Error deleting record:', error);
-    }
-  };
+  // const handleDelete = async () => {
+  //   try {
+  //     const response = await axios.delete(`https://mern-blog-1-puw7.onrender.com/posts/post/${id}`);
+  //     console.log('Record deleted successfully:', response);
+  //     navigate('/'); // Redirect to home or another page after deletion
+  //   } catch (error) {
+  //     console.error('Error deleting record:', error);
+  //   }
+  // };
 
   const handleCancel = () => {
     navigate(-1); // Go back to the previous page
@@ -24,7 +24,7 @@ const DeletePost = () => {
   return (
     <LogoutContainer>
       <LogoutMessage>Are you sure you want to delete this post?</LogoutMessage>
-      <LogoutButtonLogout onClick={handleDelete}>Delete</LogoutButtonLogout>
+      {/* <LogoutButtonLogout onClick={handleDelete}>Delete</LogoutButtonLogout> */}
       <LogoutButtonCancel onClick={handleCancel}>Cancel</LogoutButtonCancel>
     </LogoutContainer>
   );

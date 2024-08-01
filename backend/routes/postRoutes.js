@@ -89,29 +89,29 @@ router.post('/post', uploadMiddleware.single('file'), async (req,res) => {
     res.json(postDoc);
   });
 
-  router.delete('/post/:id', async (req, res) => {
-    const {id} = req.params; // Get the id from req.params
+//   router.delete('/post/:id', async (req, res) => {
+//     const {id} = req.params; // Get the id from req.params
 
-    if (!id) {
-        return res.status(400).json({ error: 'Post ID is required' });
-    }
+//     if (!id) {
+//         return res.status(400).json({ error: 'Post ID is required' });
+//     }
 
-    try {
-        // Find and delete the post by its id
-        const result = await Post.findByIdAndRemove(id);
-        if (!result) {
-            return res.status(404).json({ error: 'Post not found' });
-        }
-        // If the post had a cover image, delete it from the file system
-        if (result.cover) {
-            fs.unlinkSync(result.cover);
-        }
-        res.json({ message: 'Post deleted successfully' });
-    } catch (err) {
-        console.error('Error deleting post:', err);
-        res.status(500).json({ error: 'Failed to delete post', details: err.message });
-    }
-});
+//     try {
+//         // Find and delete the post by its id
+//         const result = await Post.findByIdAndRemove(id);
+//         if (!result) {
+//             return res.status(404).json({ error: 'Post not found' });
+//         }
+//         // If the post had a cover image, delete it from the file system
+//         if (result.cover) {
+//             fs.unlinkSync(result.cover);
+//         }
+//         res.json({ message: 'Post deleted successfully' });
+//     } catch (err) {
+//         console.error('Error deleting post:', err);
+//         res.status(500).json({ error: 'Failed to delete post', details: err.message });
+//     }
+// });
 
 
 module.exports = router;
