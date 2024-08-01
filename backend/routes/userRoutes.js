@@ -6,7 +6,7 @@ const router = express.Router();
 
 // POST /auth/register
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -15,7 +15,7 @@ router.post("/register", async (req, res) => {
     }
 
     user = new User({
-      name,
+      username,
       email,
       password,
     });
@@ -71,7 +71,7 @@ router.post("/login", async (req, res) => {
 
     const payload = {
       user: {
-        name: user.name,
+        username: user.username,
         email: user.email,
         id: user._id,
         role: user.role,
