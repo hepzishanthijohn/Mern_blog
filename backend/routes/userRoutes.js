@@ -85,11 +85,11 @@ router.post("/login", async (req, res) => {
       (err, token) => {
         if (err) throw err;
         res.json({ token,
-            user: {
-                username: user.username,
-                email: user.email,
-                id: user._id,
-              },
+            
+                 username,
+                email,
+                 _id,
+              
         });
       }
     );
