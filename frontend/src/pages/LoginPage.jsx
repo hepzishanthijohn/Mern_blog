@@ -24,7 +24,6 @@ export default function LoginPage() {
     try {
       const response = await axios.post('https://mern-blog-2-9i1u.onrender.com/users/login', 
         values,
-        { withCredentials: true } // Include credentials (cookies) with the request
       );
       
       setUserInfo(response.data);
