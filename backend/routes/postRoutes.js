@@ -45,8 +45,7 @@ router.post('/post', uploadMiddleware.single('file'), async (req,res) => {
         fs.renameSync(path, newPath);
       }
   
-      const { token } = req.cookies;
-      jwt.verify(token, process.env.JWT_SECRET, {}, async (err, info) => {
+       async (err, info) => {
         if (err) return res.status(401).json({ error: 'Unauthorized' });
   
         const { id, title, summary, content } = req.body;
@@ -64,8 +63,8 @@ router.post('/post', uploadMiddleware.single('file'), async (req,res) => {
         await postDoc.save(); // Save the updated document
   
         res.json(postDoc);
-      });
-    } catch (error) {
+    } 
+  }catch (error) {
       res.status(500).json({ error: 'Failed to update post' });
     }
   });
